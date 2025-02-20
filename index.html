@@ -30,25 +30,40 @@
 
     <script>
         let sumaTotal = 0; 
-
+        let productos = []; 
+    
         document.getElementById('myForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Evita el envío del formulario
-
+    
             // Obtiene los valores de los campos del formulario
             const name = document.getElementById('name').value.trim();
             const value = parseFloat(document.getElementById('value').value) || 0;
             const cant = parseInt(document.getElementById('cant').value) || 0;
             const total = value * cant;
             sumaTotal += total;
-
+    
+            // Almacena el producto en el array
+            const producto = { name, value, cant, total };
+            productos.push(producto);
+    
             // Crea el texto a mostrar
             const li = document.createElement('li');
             li.textContent = `Producto: ${name}, Valor: ${value}, Cantidad: ${cant}, Total: ${total}`;
+    
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Eliminar';
+            deleteButton.addEventListener('click', function() {
+                sumaTotal -= total;
+                document.getElementById('total').innerText = sumaTotal;
+                li.remove();
+            });
+    
+            li.appendChild(deleteButton);
             document.getElementById('formData').appendChild(li);
-
+    
             // Actualiza el total general
             document.getElementById('total').innerText = sumaTotal;
-
+    
             // Limpia los campos del formulario
             document.getElementById('name').value = '';
             document.getElementById('value').value = '';
